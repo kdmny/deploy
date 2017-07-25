@@ -35,10 +35,13 @@ if (branch) {
   verifyDependency(shell.which('gsutil'), 'Sorry, you need "gsutil" Google Cloud Storage CLI installed. Get it on https://cloud.google.com/storage/docs/gsutil')
   verifyDependency(shell.test('-e', `${branch}.yaml`), `Sorry, I couldn't find "${branch}.yaml"`)
 
-  console.log('Syncing static files...')
-  exec(`gsutil -m rsync -d -r storage/${branch} ${GCLOUD_BACKEND_BUCKET}/${branch}`)
+  const storage = `storage/${branch}`
+  if(shell.test('-d', storage)) {
+    console.log('Syncing static files...')
+    exec(`gsutil -m rsync -d -r ${storage} ${GCLOUD_BACKEND_BUCKET}/${branch}`)
+  } else console.log(`${storage} not found, skipping static files sync.`)
 
-  console.log(`Deploying ${branch} to GAE`)
+  console.log(`Deploying ${branch} to GAE...`)
   exec(`gcloud app deploy ${branch}.yaml --project=${GCLOUD_PROJECT} --promote --quiet`)
 }
 else console.log(usage)

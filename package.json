@@ -1,6 +1,6 @@
 {
   "name": "gae-deploy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Module to help deploy and run Google App Engine projects.",
   "main": "index.js",
   "bin": {

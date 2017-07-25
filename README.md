@@ -18,7 +18,9 @@ Make sure to install as a normal dependency, since part of it is runned on the d
 
 ## Setting up
 
-1. Create an `.env` file in your project's root folder.
+1. Create a bucket to store backend files on [Google Cloud Console](https://console.cloud.google.com/storage). Name suggestion: `backend.project-id.appspot.com`.
+
+2. Create an `.env` file in your project's root folder.
 Add `GCLOUD_PROJECT` and `GCLOUD_BACKEND_BUCKET` environment variables to it:
 
 ```
@@ -26,7 +28,7 @@ GCLOUD_PROJECT=gae-project-id-1a6std
 GCLOUD_BACKEND_BUCKET=gs://gae-project-id.appspot.com
 ```
 
-2. Create a folder named `storage` on your project's root folder. Inside this folder you should have one folder for each services you want to deploy.
+3. Create a folder named `storage` on your project's root folder. Inside this folder you should have one folder for each services you want to deploy.
 In each folder you should store the files you want to sync in your instances.
 
 ```js
@@ -38,9 +40,9 @@ storage
     └── .env
 ```
 
-3. Add `storage` to your `.gitignore` file.
+4. Add `storage` to your `.gitignore` file.
 
-4. Create an GAE yaml config file for each environment you want to have:
+5. Create an GAE yaml config file for each environment you want to have:
 ```
 // production.yaml 
 service: default
@@ -65,7 +67,17 @@ skip_files:
 manual_scaling:
   instances: 1
 ```
-5. Deploy to staging with `./node_modules/.bin/deploy staging`.
+
+6. Add sync to your `prestart` hook on `package.json`:
+```
+// package.json
+"scripts": {
+  "prestart": "./node_modules/.bin/sync",
+  ...
+}
+```
+
+7. Make sure you already have a `default` service running before you deploy any other. You can deploy to production with `./node_modules/.bin/deploy production`.
 
 ## Commands
 

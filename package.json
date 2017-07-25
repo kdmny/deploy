@@ -1,0 +1,22 @@
+{
+  "name": "gae-deploy",
+  "version": "1.0.4",
+  "description": "Module to help deploy and run Google App Engine projects.",
+  "main": "index.js",
+  "bin": {
+    "deploy": "./deploy.js",
+    "sync": "./sync.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Leonardo Kewitz <leo@invisible.email>",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/storage": "^1.2.1",
+    "dotenv": "^4.0.0",
+    "lodash": "^4.17.4",
+    "shelljs": "^0.7.8"
+  }
+}

@@ -24,9 +24,14 @@ const download = file => {
 }
 
 if (process.env.GCLOUD_PROJECT) {
-  console.log('Syncing static files...')
+  const msg = [
+    `Syncing static files for ${process.env.GCLOUD_PROJECT}`,
+    `service: ${process.env.GAE_SERVICE}`,
+    `from ${process.env.GCLOUD_BACKEND_BUCKET}`
+  ].join(' ')
+  console.log(msg)
 
-  gcs.bucket(`${process.env.GCLOUD_PROJECT}.appspot.com/`)
+  gcs.bucket(`${process.env.GCLOUD_BACKEND_BUCKET}/`)
     .getFiles()
     .then(flatten)
     .then(filter(forCurrentEnvironment))

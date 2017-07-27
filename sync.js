@@ -24,7 +24,7 @@ const download = file => {
 }
 
 if (process.env.GCLOUD_PROJECT) {
-  const bucket = `gs://${process.env.GCLOUD_PROJECT}-backend`
+  const bucket = `${process.env.GCLOUD_PROJECT}-backend`
   const msg = [
     `Syncing static files for ${process.env.GCLOUD_PROJECT}`,
     `service: ${process.env.GAE_SERVICE}`,
@@ -32,7 +32,7 @@ if (process.env.GCLOUD_PROJECT) {
   ].join(' ')
   console.log(msg)
 
-  gcs.bucket(`${bucket}/`)
+  gcs.bucket(bucket)
     .getFiles()
     .then(flatten)
     .then(filter(forCurrentEnvironment))

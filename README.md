@@ -14,19 +14,27 @@ npm install invisible-tech/gae-deploy
 yarn add invisible-tech/gae-deploy
 ```
 
-Make sure to install as a normal dependency, since part of it is runned on the deployed instance and dev-dependencies are not installed on production.
+Make sure to install as a normal dependency, since part of it is run on the deployed instance, and dev-dependencies are not installed on production.
+
+## Prerequisites
+
+1. Create a project https://console.cloud.google.com and note the project ID.
+2. Install the `gcloud` sdk https://cloud.google.com/sdk/downloads
+3. If this is your first time using the gcloud sdk make sure to run `gcloud auth login`
+4. From your project directory, run `gcloud app create --project=your-project-id --region=us-central`
 
 ## Setting up
 
-1. Create a bucket to store backend files on [Google Cloud Console](https://console.cloud.google.com/storage). Name suggestion: `backend.project-id.appspot.com`.
-
-2. Create an `.env` file in your project's root folder.
-Add `GCLOUD_PROJECT` and `GCLOUD_BACKEND_BUCKET` environment variables to it:
+1. Create an `.env` file in your project's root folder.
+Add your `GCLOUD_PROJECT` environment variable to it. Don't set `PORT` in your `staging/.env` or `production/.env`, GAE will set this for you.
 
 ```
 GCLOUD_PROJECT=gae-project-id-1a6std
-GCLOUD_BACKEND_BUCKET=gs://gae-project-id.appspot.com
 ```
+
+This will be used to sync your local `storage` files to the bucket.
+
+2. Run `./node_modules/.bin/deploy` setup to create the backend bucket on Google Cloud.
 
 3. Create a folder named `storage` on your project's root folder. Inside this folder you should have one folder for each services you want to deploy.
 In each folder you should store the files you want to sync in your instances.
@@ -42,9 +50,10 @@ storage
 
 4. Add `storage` to your `.gitignore` file.
 
-5. Create an GAE yaml config file for each environment you want to have:
-```
-// production.yaml 
+5. Create an GAE yaml config file for each environment you want to have.
+
+```yaml
+# production.yaml
 service: default
 runtime: nodejs
 env: flex
@@ -53,8 +62,10 @@ skip_files:
  - ^node_modules$
  - ^ignore$
  - ^.env$
+```
 
-// staging.yaml 
+```yaml
+# staging.yaml
 service: staging
 runtime: nodejs
 env: flex
@@ -79,13 +90,18 @@ manual_scaling:
 
 7. Make sure you already have a `default` service running before you deploy any other. You can deploy to production with `./node_modules/.bin/deploy production`.
 
+8. If you are experience a bug, it might be a problem with the `--quiet` flag, so try running the command
+`gcloud app deploy production.yaml --project=your-project-id --promote`
+
 ## Commands
 
 ### deploy
 
-Usage: `./node_modules/.bin/deploy [staging|production]`
+Usage: `./node_modules/.bin/deploy [setup|staging|production]`
 
-Sync static files to your project's backend bucket and deploys current project using the corresponding `staging.yaml` file.
+Setup the necessery bucket for using this.
+
+Sync static files to your project's backend bucket and deploys current project using the corresponding `branch.yaml` file.
 
 ### sync
 

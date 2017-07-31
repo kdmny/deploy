@@ -21,12 +21,12 @@ Make sure to install as a normal dependency, since part of it is run on the depl
 1. Create a project https://console.cloud.google.com and note the project ID.
 2. Install the `gcloud` sdk https://cloud.google.com/sdk/downloads
 3. If this is your first time using the gcloud sdk make sure to run `gcloud auth login`
-4. From your project directory, run `gcloud app create --project=your-project-id`
+4. From your project directory, run `gcloud app create --project=your-project-id --region=us-central`
 
 ## Setting up
 
 1. Create an `.env` file in your project's root folder.
-Add `GCLOUD_PROJECT` environment variables to it. Don't set `PORT` in your `staging/.env` or `production/.env`, GAE will set this for you.
+Add your `GCLOUD_PROJECT` environment variable to it. Don't set `PORT` in your `staging/.env` or `production/.env`, GAE will set this for you.
 
 ```
 GCLOUD_PROJECT=gae-project-id-1a6std

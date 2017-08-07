@@ -38,7 +38,7 @@ if (branch) {
     verifyDependency(shell.test('-e', `${branch}.yaml`), `Sorry, I couldn't find "${branch}.yaml"`)
     if(shell.test('-d', storage)) {
       console.log('Syncing static files...')
-      exec('gsutil', ['-m', 'rsync', '-d', '-r', storage, `${bucket}/${branch}`])
+      exec('gsutil', ['-m', 'rsync', '-r', storage, `${bucket}/${branch}`])
     } else console.log(`${storage} not found, skipping static files sync.`)
 
     console.log(`Deploying ${branch} to GAE...`)

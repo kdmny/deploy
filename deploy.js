@@ -6,10 +6,23 @@ const shell = require('shelljs')
 const { spawn } = require('child_process')
 
 const { GCLOUD_PROJECT } = process.env
-const usage = `Usage: deploy branch
-       deploy setup
+const usage = `Usage: deploy [setup|download|static|production|staging|branchName]
 
-Branch can be: staging, production or any other set up with a "yml" file.`
+Argument can be:
+
+  setup
+      Creates the default backend bucket for this project.
+
+  download
+      Downloads all static files from the backend bucket.
+
+  static
+      Uploads all static files to the backend bucket.
+
+  branchName
+      Uploads branch static files and deploys the App to Google App Engine
+      based on branchName.yaml file.
+`
 
 const verifyDependency = (condition, msg) => {
   if (! condition) {
@@ -23,26 +36,43 @@ const exec = (cmd, args) => {
   return spawn(cmd, args, { stdio: 'inherit' })
 }
 
-const [ branch, ] = process.argv.slice(2)
+const [ argument, ] = process.argv.slice(2)
 
-if (branch) {
+if (argument) {
   verifyDependency(GCLOUD_PROJECT, 'Sorry, you need to set a GCLOUD_PROJECT environment variable. You can set that in your local ".env" file.')
   verifyDependency(shell.which('gcloud'), 'Sorry, you need Google Cloud SDK installed. Get it on https://cloud.google.com/sdk/gcloud/')
   verifyDependency(shell.which('gsutil'), 'Sorry, you need "gsutil" Google Cloud Storage CLI installed. Get it on https://cloud.google.com/storage/docs/gsutil')
 
   const bucket = `gs://${GCLOUD_PROJECT}-backend`
-  const storage = `storage/${branch}`
-  if (branch === 'setup') {
+  if (argument === 'setup') {
+    // Creates the default backend bucket for this project.
     exec('gsutil', ['mb', '-p', GCLOUD_PROJECT, bucket])
-  } else {
-    verifyDependency(shell.test('-e', `${branch}.yaml`), `Sorry, I couldn't find "${branch}.yaml"`)
+  }
+  else if (argument === 'download') {
+    if (!shell.test('-d', 'storage')) shell.mkdir('storage')
+    console.log('Fetching all static files from Google Cloud...')
+    // Recursively downloads all static files.
+    exec('gsutil', ['-m', 'rsync', '-r', bucket, 'storage'])
+  }
+  else if (argument === 'static') {
+    if (shell.test('-d', 'storage')) {
+      console.log('Syncing all static files...')
+      // Recursively uploads all static files to the bucket.
+      exec('gsutil', ['-m', 'rsync', '-r', 'storage', bucket])
+    } else console.log('\'./storage\' not found, skipping static files sync.')
+  }
+  else {
+    const storage = `storage/${argument}`
+    verifyDependency(shell.test('-e', `${argument}.yaml`), `Sorry, I couldn't find "${argument}.yaml"`)
     if(shell.test('-d', storage)) {
       console.log('Syncing static files...')
-      exec('gsutil', ['-m', 'rsync', '-r', storage, `${bucket}/${branch}`])
+      // Recursively uploads static files from the desired branch to the bucket.
+      exec('gsutil', ['-m', 'rsync', '-r', storage, `${bucket}/${argument}`])
     } else console.log(`${storage} not found, skipping static files sync.`)
 
-    console.log(`Deploying ${branch} to GAE...`)
-    exec('gcloud', ['app', 'deploy', `${branch}.yaml`, `--project=${GCLOUD_PROJECT}`, '-q'])
+    console.log(`Deploying ${argument} to GAE...`)
+    // Deploys app to Google App Engine based on the desired branch YAML file.
+    exec('gcloud', ['app', 'deploy', `${argument}.yaml`, `--project=${GCLOUD_PROJECT}`, '-q'])
   }
 }
 else console.log(usage)

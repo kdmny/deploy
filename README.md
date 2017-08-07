@@ -97,11 +97,24 @@ manual_scaling:
 
 ### deploy
 
-Usage: `./node_modules/.bin/deploy [setup|staging|production]`
+Usage:
+```
+deploy [setup|download|static|production|staging|branchName]
+```
 
-Setup the necessery bucket for using this.
+Argument can be:
 
-Sync static files to your project's backend bucket and deploys current project using the corresponding `branch.yaml` file.
+  * `setup`
+      Creates the default backend bucket for this project.
+
+  * `download`
+      Downloads all static files from the backend bucket.
+
+  * `static`
+      Uploads all static files to the backend bucket.
+
+  * `branchName`
+      Uploads branch static files and deploys the App to Google App Engine based on `branchName.yaml` file.
 
 ### sync
 

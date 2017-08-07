@@ -34,7 +34,7 @@ GCLOUD_PROJECT=gae-project-id-1a6std
 
 This will be used to sync your local `storage` files to the bucket.
 
-2. Run `./node_modules/.bin/deploy` setup to create the backend bucket on Google Cloud.
+2. Run `./node_modules/.bin/deploy setup` to create the backend bucket on Google Cloud.
 
 3. Create a folder named `storage` on your project's root folder. Inside this folder you should have one folder for each services you want to deploy.
 In each folder you should store the files you want to sync in your instances.

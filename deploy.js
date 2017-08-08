@@ -31,9 +31,13 @@ const verifyDependency = (condition, msg) => {
   }
 }
 
-const exec = (cmd, args=[]) => {
+const execNonStrict = (cmd, args=[]) => {
   console.log(`> ${cmd} ${args.join(' ')}`)
-  const { status } = spawnSync(cmd, args, { stdio: [null, process.stdout, process.stderr] })
+  return spawnSync(cmd, args, { stdio: [null, process.stdout, process.stderr] })
+}
+
+const exec = (cmd, args=[]) => {
+  const { status } = execNonStrict(cmd, args)
   if (status !== 0) process.exit(status)
 }
 

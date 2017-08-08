@@ -31,9 +31,10 @@ const verifyDependency = (condition, msg) => {
   }
 }
 
-const exec = (cmd, args) => {
+const exec = (cmd, args=[]) => {
   console.log(`> ${cmd} ${args.join(' ')}`)
-  return spawn(cmd, args, { stdio: 'inherit' })
+  const { status } = spawnSync(cmd, args, { stdio: [null, process.stdout, process.stderr] })
+  if (status !== 0) process.exit(status)
 }
 
 const [ argument, ] = process.argv.slice(2)

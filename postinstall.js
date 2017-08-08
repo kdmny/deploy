@@ -6,7 +6,8 @@ const shell = require('shelljs')
 
 const exec = (cmd, args=[]) => {
   console.log(`> ${cmd} ${args.join(' ')}`)
-  return spawnSync(cmd, args, { stdio: 'inherit' })
+  const { status } = spawnSync(cmd, args, { stdio: [null, process.stdout, process.stderr] })
+  if (status !== 0) process.exit(status)
 }
 
 const isOnCloud = Boolean(process.env.GCLOUD_PROJECT)

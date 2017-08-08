@@ -38,6 +38,7 @@ if (process.env.GCLOUD_PROJECT) {
     .then(filter(forCurrentEnvironment))
     .then(map(download))
     .catch(error => {
+      console.log({error})
       console.error(error)
       process.exit(1)
     })

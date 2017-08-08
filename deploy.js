@@ -3,7 +3,7 @@
 
 require('dotenv').config()
 const shell = require('shelljs')
-const { spawn } = require('child_process')
+const { spawnSync } = require('child_process')
 
 const { GCLOUD_PROJECT } = process.env
 const usage = `Usage: deploy [setup|download|static|production|staging|branchName]

@@ -37,5 +37,8 @@ if (process.env.GCLOUD_PROJECT) {
     .then(flatten)
     .then(filter(forCurrentEnvironment))
     .then(map(download))
-    .catch(console.log)
+    .catch(error => {
+      console.error(error)
+      process.exit(1)
+    })
 }

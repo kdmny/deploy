@@ -8,7 +8,7 @@
     "sync": "./sync.js"
   },
   "scripts": {
-    "postinstall": "./deploy.js setup && ./deploy.js download",
+    "postinstall": "cd ../.. && node_modules/.bin/deploy setup && node_modules/.bin/deploy download",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

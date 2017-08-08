@@ -50,8 +50,8 @@ if (argument) {
 
   const bucket = `gs://${GCLOUD_PROJECT}-backend`
   if (argument === 'setup') {
-    // Creates the default backend bucket for this project.
-    exec('gsutil', ['mb', '-p', GCLOUD_PROJECT, bucket])
+    // Creates the default backend bucket for this project, if it doesn't already exist
+    execNonStrict('gsutil', ['mb', '-p', GCLOUD_PROJECT, bucket])
   }
   else if (argument === 'download') {
     if (!shell.test('-d', 'storage')) shell.mkdir('storage')

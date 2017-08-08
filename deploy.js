@@ -3,7 +3,7 @@
 
 require('dotenv').config()
 const shell = require('shelljs')
-const { spawn } = require('child_process')
+const { spawnSync } = require('child_process')
 
 const { GCLOUD_PROJECT } = process.env
 const usage = `Usage: deploy [setup|download|static|production|staging|branchName]
@@ -31,9 +31,15 @@ const verifyDependency = (condition, msg) => {
   }
 }
 
-const exec = (cmd, args) => {
+
+const execSafe = (cmd, args=[]) => {
   console.log(`> ${cmd} ${args.join(' ')}`)
-  return spawn(cmd, args, { stdio: 'inherit' })
+  return spawnSync(cmd, args, { stdio: [null, process.stdout, process.stderr] })
+}
+
+const exec = (...args) => {
+  const { status } = execSafe(...args)
+  if (status != 0) process.exit(status)
 }
 
 const [ argument, ] = process.argv.slice(2)
@@ -45,7 +51,7 @@ if (argument) {
 
   const bucket = `gs://${GCLOUD_PROJECT}-backend`
   if (argument === 'setup') {
-    // Creates the default backend bucket for this project.
+    // Creates the default backend bucket for this project, if non existant
     exec('gsutil', ['mb', '-p', GCLOUD_PROJECT, bucket])
   }
   else if (argument === 'download') {

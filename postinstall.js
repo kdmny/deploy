@@ -4,12 +4,12 @@
 const { spawnSync } = require('child_process')
 const shell = require('shelljs')
 
-const exec = (cmd, args) => {
+const exec = (cmd, args=[]) => {
   console.log(`> ${cmd} ${args.join(' ')}`)
   return spawnSync(cmd, args, { stdio: 'inherit' })
 }
 
-const isOnCloud = Boolean(process.env.GAE_SERVICE)
+const isOnCloud = Boolean(process.env.GCLOUD_PROJECT)
 if (isOnCloud) {
   exec('node_modules/.bin/sync')
 } else { // Dev ENV

@@ -8,7 +8,6 @@
     "sync": "./sync.js"
   },
   "scripts": {
-    "postinstall": "./deploy.js setup && ./deploy.js download",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

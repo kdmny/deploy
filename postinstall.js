@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 'use strict'
 
-const { spawn } = require('child_process')
+const { spawnSync } = require('child_process')
 const shell = require('shelljs')
 
 const exec = (cmd, args) => {
   console.log(`> ${cmd} ${args.join(' ')}`)
-  return spawn(cmd, args, { stdio: 'inherit' })
+  return spawnSync(cmd, args, { stdio: 'inherit' })
 }
 
 const isOnCloud = Boolean(process.env.GAE_SERVICE)

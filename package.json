@@ -8,7 +8,7 @@
     "sync": "./sync.js"
   },
   "scripts": {
-    "postinstall": "./postinstall.js",
+    "postinstall": "cd ../.. && ./node_modules/gae-deploy/postinstall.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

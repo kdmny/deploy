@@ -10,7 +10,7 @@ const exec = (cmd, args=[]) => {
   if (status !== 0) process.exit(status)
 }
 
-const isOnCloud = Boolean(process.env.GCLOUD_PROJECT)
+const isOnCloud = Boolean(process.env.GAE_SERVICE)
 if (isOnCloud) {
   exec('node_modules/.bin/sync')
 } else { // Dev ENV

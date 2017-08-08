@@ -10,6 +10,8 @@ const exec = (cmd, args=[]) => {
   if (status !== 0) process.exit(status)
 }
 
+console.log(JSON.stringify(process.env, undefined, 2))
+
 const isOnCloud = Boolean(process.env.GAE_SERVICE)
 if (isOnCloud) {
   exec('node_modules/.bin/sync')

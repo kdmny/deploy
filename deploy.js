@@ -39,7 +39,7 @@ const execSafe = (cmd, args=[]) => {
 
 const exec = (...args) => {
   const { status } = execSafe(...args)
-  if (status != 0) process.exit(status)
+  if (status !== 0) process.exit(status)
 }
 
 const [ argument, ] = process.argv.slice(2)
@@ -52,7 +52,7 @@ if (argument) {
   const bucket = `gs://${GCLOUD_PROJECT}-backend`
   if (argument === 'setup') {
     // Creates the default backend bucket for this project, if non existant
-    exec('gsutil', ['mb', '-p', GCLOUD_PROJECT, bucket])
+    execSafe('gsutil', ['mb', '-p', GCLOUD_PROJECT, bucket])
   }
   else if (argument === 'download') {
     if (!shell.test('-d', 'storage')) shell.mkdir('storage')

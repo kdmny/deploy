@@ -1,4 +1,4 @@
-# gae-deploy
+# deploy
 
 Module to help deploy and run Google App Engine projects with features like:
 - Deploy multiple services for production and staging.
@@ -7,11 +7,11 @@ Module to help deploy and run Google App Engine projects with features like:
 ## Install
 
 ```
-npm install invisible-tech/gae-deploy
+npm install @invisible/deploy
 
 # or
 
-yarn add invisible-tech/gae-deploy
+yarn add @invisible/deploy
 ```
 
 Make sure to install as a normal dependency, since part of it is run on the deployed instance, and dev-dependencies are not installed on production.

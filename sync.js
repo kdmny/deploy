@@ -23,22 +23,30 @@ const download = file => {
   return file.download({ destination })
 }
 
-if (process.env.GCLOUD_PROJECT) {
-  const bucket = `${process.env.GCLOUD_PROJECT}-backend`
-  const msg = [
-    `Syncing static files for ${process.env.GCLOUD_PROJECT}`,
-    `service: ${process.env.GAE_SERVICE}`,
-    `from ${bucket}`
-  ].join(' ')
-  console.log(msg)
+const sync = async () => {
+  const bucketName = `${process.env.GCLOUD_PROJECT}-backend`
+  const bucket = gcs.bucket(bucketName)
+  const [exists] = await bucket.exists()
 
-  gcs.bucket(bucket)
-    .getFiles()
-    .then(flatten)
-    .then(filter(forCurrentEnvironment))
-    .then(map(download))
-    .catch(error => {
-      console.error(error)
-      process.exit(1)
-    })
+  if (exists) {
+    const msg = [
+      `Syncing static files for ${process.env.GCLOUD_PROJECT}`,
+      `service: ${process.env.GAE_SERVICE}`,
+      `from ${bucketName}`
+    ].join(' ')
+    console.log(msg)
+    bucket
+      .getFiles()
+      .then(flatten)
+      .then(filter(forCurrentEnvironment))
+      .then(map(download))
+      .catch(error => {
+        console.error(error)
+        process.exit(1)
+      })
+  } else console.log(`${bucketName} doesn't exist, skipping static file sync.`)
+}
+
+if (process.env.GCLOUD_PROJECT) {
+  sync()
 }

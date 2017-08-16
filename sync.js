@@ -44,7 +44,7 @@ const sync = async () => {
         console.error(error)
         process.exit(1)
       })
-  } else console.log(`${bucketName} doesn't exists, skipping static file sync.`)
+  } else console.log(`${bucketName} doesn't exist, skipping static file sync.`)
 }
 
 if (process.env.GCLOUD_PROJECT) {

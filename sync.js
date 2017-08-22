@@ -1,12 +1,11 @@
 #!/usr/bin/env node
+
 'use strict'
 
-const assert = require('assert')
-const shell = require('shelljs')
 const gcs = require('@google-cloud/storage')()
 const { includes, map, filter, flatten } = require('lodash/fp')
 
-// eslint-disable no-console
+/* eslint-disable no-console */
 
 const branch = process.env.GAE_SERVICE === 'default'
   ? 'production'
@@ -32,7 +31,7 @@ const sync = async () => {
     const msg = [
       `Syncing static files for ${process.env.GCLOUD_PROJECT}`,
       `service: ${process.env.GAE_SERVICE}`,
-      `from ${bucketName}`
+      `from ${bucketName}`,
     ].join(' ')
     console.log(msg)
     bucket

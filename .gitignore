@@ -1,1 +1,5 @@
+# node shiz
 node_modules
+
+# each project can have an ignore subdirectory
+ignore

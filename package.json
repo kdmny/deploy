@@ -1,6 +1,6 @@
 {
   "name": "@invisible/deploy",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Module to help deploy and run Google App Engine projects.",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint . --ignore-path .gitignore",
     "pretest": "yarn run lint",
-    "test": ""
+    "test": "exit 0",
+    "posttest": "assert-version-bump"
   },
   "keywords": [],
   "author": "Leonardo Kewitz <leo@invisible.email>",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@invisible/eslint-config": "^1.0.0",
+    "@invisible/publish": "^1.1.6",
     "eslint": "^4.7.2"
   }
 }

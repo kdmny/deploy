@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint . --ignore-path .gitignore",
     "pretest": "yarn run lint",
-    "test": "",
+    "test": "exit 0",
     "posttest": "assert-version-bump"
   },
   "keywords": [],

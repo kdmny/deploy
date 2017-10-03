@@ -1,5 +1,7 @@
 # deploy
 
+[![CircleCI](https://circleci.com/gh/invisible-tech/deploy/tree/master.svg?style=svg)](https://circleci.com/gh/invisible-tech/deploy/tree/master)
+
 Module to help deploy and run Google App Engine projects with features like:
 - Deploy multiple services for production and staging.
 - Sync static files from your PC to Google Storage and to App instances.

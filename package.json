@@ -1,6 +1,6 @@
 {
   "name": "@invisible/deploy",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Module to help deploy and run Google App Engine projects.",
   "main": "index.js",
   "bin": {

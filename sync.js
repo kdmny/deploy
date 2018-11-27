@@ -14,12 +14,9 @@ const branch = process.env.GAE_SERVICE === 'default'
 const forCurrentEnvironment = ({ name }) =>
   includes(branch)(name)
 
-const fixName = name => name.replace(/^\w+\//, '')
-
 const download = file => {
-  const destination = fixName(file.name)
-  console.log(`Downloading file: ${destination}`)
-  return file.download({ destination })
+  console.log(`Downloading file: ${file.name} to .env`)
+  return file.download({ destination: '.env' })
 }
 
 const sync = async () => {

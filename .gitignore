@@ -3,3 +3,6 @@ node_modules
 
 # each project can have an ignore subdirectory
 ignore
+yarn-error.log
+coverage/
+.nyc_output/

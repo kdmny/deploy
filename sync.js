@@ -3,7 +3,7 @@
 'use strict'
 
 const gcs = require('@google-cloud/storage')()
-const { includes, map, filter, flatten } = require('lodash/fp')
+const { map, filter, flatten } = require('lodash/fp')
 
 /* eslint-disable no-console */
 
@@ -11,8 +11,7 @@ const branch = process.env.GAE_SERVICE === 'default'
   ? 'production'
   : process.env.GAE_SERVICE
 
-const forCurrentEnvironment = ({ name }) =>
-  includes(branch)(name)
+const forCurrentEnvironment = ({ name }) => `${branch}/.env` === name
 
 const download = file => {
   console.log(`Downloading file: ${file.name} to .env`)
@@ -45,4 +44,8 @@ const sync = async () => {
 
 if (process.env.GCLOUD_PROJECT) {
   sync()
+}
+
+module.exports = {
+  forCurrentEnvironment,
 }
